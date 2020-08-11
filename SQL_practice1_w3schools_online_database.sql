@@ -73,4 +73,3 @@ Left Join Categories
 On Products.CategoryID = Categories.CategoryID
 WHERE Categories.CategoryName = "Dairy Products";
 
-123456676767
