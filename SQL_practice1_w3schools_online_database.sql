@@ -73,4 +73,47 @@ Left Join Categories
 On Products.CategoryID = Categories.CategoryID
 WHERE Categories.CategoryName = "Dairy Products";
 
-666
+
+
+##5.	Return the top 5 countries which have the most customers? (hint: use distinct to get unique customers)
+SELECT count(distinct CustomerID), Country
+   FROM Customers
+   Group by Country
+   Order by count(distinct CustomerID) DESC
+   LIMIT 5;
+   
+##7.	Which employees studied English in their education background? 
+SELECT * FROM Employees
+WHERE Notes LIKE "%English%";
+
+##8.	Which employees are born after 1960? (hint: use ‘1960-01-01’ to compare with brith date)
+SELECT * FROM Employees
+WHERE BirthDate > '1960-01-01';
+
+##9.	Return the top 10 products have been sold the most
+SELECT distinct ProductName FROM Products
+Natural Join OrderDetails
+WHERE Products.ProductID = OrderDetails.ProductID
+and ProductID in
+(
+SELECT OrderDetails.ProductID FROM OrderDetails
+Group by OrderDetails.ProductID
+Order by count(OrderDetails.OrderID) DESC
+LIMIT 10
+);
+
+##10.What are the average prices for ‘bottles’ and ‘jars’ products? (hard)
+SELECT Avg(Price), ProductTypes FROM
+(SELECT Price,
+ CASE
+   WHEN Unit like "%jars%" THEN 'Product jars'
+   WHEN Unit like "%bottles%" THEN 'Product bottles'
+   ELSE NULL
+  END AS ProductTypes
+   FROM 
+       (
+         SELECT * FROM Products
+         WHERE Unit like "%jars%" or Unit like "%bottles%"
+        )
+   Order by ProductTypes)
+ Group by ProductTypes;
