@@ -29,7 +29,7 @@ SELECT staff_id FROM rental
 WHERE rental_date like "%2005-05%" or  return_date like "%2005-05%"
 Group by staff_id
 Order by count(staff_id) DESC;
-#LIMIT 1;
+#LIMIT 1
 
 #8.	Which customer paid the most rental in August?
 SELECT sum(amount), customer_id FROM payment
@@ -81,3 +81,11 @@ group by customer.customer_id
 order by customer.last_name;
 #List the customers alphabetically by last name:
 
+#15. Select all the rentals in May whose amount is higher than the 
+#average May payment amount
+Set @avg_amount = (select avg(amount) from payment where month(payment_date)= 5);
+select * from payment
+where amount > @avg_amount
+and month(payment_date)= 5 ;
+
+#16. 
