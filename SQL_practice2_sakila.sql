@@ -225,7 +225,7 @@ SET SQL_SAFE_UPDATES = 1;
 
 ##5A You cannot locate the schema of the address table. Which query would you use to re-create it?
 SHOW columns From sakila.address;
-
+##describe
 
 ## 6a Use JOIN to display the first and last names, as well as the address, of each staff member. Use the tables staff and address:
 SELECT first_name, last_name, address
