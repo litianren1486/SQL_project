@@ -102,8 +102,10 @@ SELECT film_id from film WHERE title = 'Academy Dinosaur'
 and store_id = 1;
 
 # Insert a record to represent Mary Smith renting 'Academy Dinosaur' from Mike Hillyer at Store 1 today .
-INSERT INTO rental(rental_id, rental_date, inventory_id, customer_id, return_date, staff_id, last_update)
-    Values(rental_id,'2020-08-25 13:20:00', 1, 1, '2020-08-25 13:20:00', 1, '2020-08-25 13:20:00');
+SET SQL_SAFE_UPDATES = 0;
+INSERT INTO sakila.rental
+Values(10000007,now(), 1, 1, '2020-08-25 13:20:00', 1, '2020-08-25 13:20:00');
+SET SQL_SAFE_UPDATES = 1;
     
 #-- When is 'Academy Dinosaur' due?
 SET @rental_duration = rental.return_date - rental.rental_date;
@@ -352,3 +354,41 @@ FROM top5genres;
 ##8c You find that you no longer need the view top_five_genres. Write a query to delete it.
 DROP view if exists top5genres;
 SHOW CREATE view Top5genres;
+
+
+
+
+#1. Replace all the space in film description with "_".
+Select regexp_replace(description,' ','_')
+from film;
+
+#2. Return the characters between the "()" in address; 
+#Remove the "()" and everything in it.
+SELECT regexp_substr(address, '(?<=\\()\.+(?=\\))')
+from address;
+
+select regexp_replace(address,'\\(\.+\\)',' ')
+from address;
+
+
+#3. Return customers' first name and last name from customers' email address.
+select email, regexp_substr(email, '\\A\.+(?=\\@)')
+from customer;
+
+#4. Return a movie count summary by special features.
+select count(film_id), regexp_substr(special_features,'\\,\\w+\\,')
+from film
+group by special_features;
+
+
+#5. Find all the cities that have a ‘-‘ symbol and replace it with ‘#’.
+select city
+from sakila.city
+where city regexp '\\w+\-\\w+';
+
+select regexp_replace(city, '-','#')
+from city;
+#6. Find all the films that have at least 3 words in the title. 
+select title
+from sakila.film
+where title regexp '\\A\\w+\\s\\w+\\s\\w+';
